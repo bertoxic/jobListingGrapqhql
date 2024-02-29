@@ -1,0 +1,66 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+type JobListing {
+  id: ID!
+  title: String!
+  description: String!
+  company: String!
+  url: String!
+  address: Address!
+}
+
+type Address {
+  street: String!
+  city: String!
+  state: String!
+  zip: String!
+}
+
+
+type Query {
+  jobs: [JobListing]!
+  job(id: ID!): JobListing!
+  filterJobs(filter:String!,field:String!):[JobListing]
+ # jobs(ctx context.Context, title *string) ([]*JobListing, error) `gqlgen:"name:\"joblist\" filter:"{title: $title}"`
+
+}
+
+type Mutation {
+  createJobListing(input: CreateJobListingInput!): JobListing!
+  updateJobListing(id: ID!, input: UpdateJobListingInput!): JobListing!
+  deleteJobListing(id: ID!): DeleteJobResponse!
+}
+
+input CreateJobListingInput {
+  title: String!
+  description: String!
+  company: String!
+  url: String!
+  address: CreateAddress!
+}
+
+input UpdateJobListingInput {
+  title: String
+  description: String
+  company: String
+  url: String
+  address: CreateAddress!
+}
+
+input CreateAddress {
+  street: String
+  city: String
+  state: String
+  zip: String
+}
+
+type DeleteJobResponse {
+  deletedJobId: String!
+}
+
+#go run github.com/99designs/gqlgen generate
+
+# github.com/99designs/gqlgen/internal/imports@v0.17.44
+# github.com/99designs/gqlgen/codegen/config@v0.17.44
+# go get github.com/99designs/gqlgen@v0.17.44
